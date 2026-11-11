@@ -25,7 +25,7 @@ export const PosTablesSection: React.FC<PosTablesSectionProps> = ({
           </View>
           <Pressable
             onPress={onOpenAddModal}
-            className="bg-[#4F46E5] px-3 py-1.5 rounded-lg flex-row items-center gap-1.5 active:bg-[#4338CA]">
+            className="bg-emerald-600 px-3 py-1.5 rounded-lg flex-row items-center gap-1.5 active:bg-emerald-700 shadow-sm">
             <PosIcon name="plus" size={12} color="#FFFFFF" />
             <Text className="text-white text-xs font-semibold">Add Product</Text>
           </Pressable>
@@ -143,7 +143,7 @@ export const PosTablesSection: React.FC<PosTablesSectionProps> = ({
 
         <Pressable
           onPress={onViewAllAlerts}
-          className="mt-4 bg-[#4F46E5] py-2.5 rounded-lg items-center active:bg-[#4338CA]">
+          className="mt-4 bg-emerald-600 py-2.5 rounded-lg items-center active:bg-emerald-700 shadow-sm">
           <Text className="text-white text-xs font-bold">View All Alerts</Text>
         </Pressable>
       </View>

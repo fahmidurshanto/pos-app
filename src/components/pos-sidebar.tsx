@@ -22,8 +22,12 @@ interface MenuItem {
   children?: SubMenuItem[];
 }
 
+// ONLY TABS THAT HAVE CORRESPONDING APIS FROM BACKEND DEVELOPER (22 APIs)
 export const MENU_ITEMS: MenuItem[] = [
+  // 1. Dashboard (API 1: login, API 2: dashboard)
   { id: 'Dashboard', title: 'Dashboard', icon: 'dashboard' },
+
+  // 2. Sales (API: saleService createSale & getSales)
   {
     id: 'Sales',
     title: 'Sales',
@@ -33,32 +37,8 @@ export const MENU_ITEMS: MenuItem[] = [
       { id: 'Sales_New', title: 'New Sale' },
     ],
   },
-  {
-    id: 'Customers',
-    title: 'Customers',
-    icon: 'users',
-    children: [
-      { id: 'Customers_List', title: 'Customers' },
-      { id: 'Customers_New', title: 'New Customer' },
-    ],
-  },
-  {
-    id: 'Accounting',
-    title: 'Accounting',
-    icon: 'dollar-sign',
-    children: [
-      { id: 'Accounting_SupplierAccount', title: 'Supplier Account' },
-      { id: 'Accounting_DailyJournal', title: 'Daily Jurnal/Expense' },
-    ],
-  },
-  {
-    id: 'Reports',
-    title: 'Reports',
-    icon: 'bar-chart',
-    children: [
-      { id: 'Reports_Inventory', title: 'Inventory', icon: 'grid' },
-    ],
-  },
+
+  // 3. Products & Inventory (API 7-10: category, API 11-14: subcats, API 15-18: units, API 19-22: products)
   {
     id: 'Products',
     title: 'Products',
@@ -68,44 +48,16 @@ export const MENU_ITEMS: MenuItem[] = [
       { id: 'Products_Category', title: 'Category' },
       { id: 'Products_SubCategory', title: 'Sub Category' },
       { id: 'Products_Units', title: 'Units' },
-      { id: 'Products_Brands', title: 'Brands' },
     ],
   },
-  {
-    id: 'Purchase Order',
-    title: 'Purchase Order',
-    icon: 'shopping-cart',
-    children: [
-      { id: 'Purchase_List', title: 'Purchase List' },
-    ],
-  },
-  {
-    id: 'Damage Order',
-    title: 'Damage Order',
-    icon: 'alert-triangle',
-    children: [
-      { id: 'Damage_List', title: 'Damage List' },
-      { id: 'Damage_ExpirationList', title: 'Expiration List' },
-    ],
-  },
+
+  // 4. Supplier (API 3-6: suppliers CRUD)
   {
     id: 'Supplier',
     title: 'Supplier',
     icon: 'users',
     children: [
       { id: 'Supplier_List', title: 'Suppliers' },
-      { id: 'Supplier_ImportCSV', title: 'Import CSV' },
-    ],
-  },
-  {
-    id: 'Setting',
-    title: 'Setting',
-    icon: 'settings',
-    children: [
-      { id: 'Setting_PaymentMethods', title: 'Payments methods' },
-      { id: 'Setting_Employees', title: 'Employees' },
-      { id: 'Setting_Logs', title: 'Logs' },
-      { id: 'Setting_ChangePassword', title: 'Change Password' },
     ],
   },
 ];
@@ -118,14 +70,8 @@ export const PosSidebar: React.FC<PosSidebarProps> = ({
 }) => {
   const [expanded, setExpanded] = React.useState<Record<string, boolean>>({
     Sales: true,
-    Customers: false,
-    Accounting: false,
-    Reports: false,
-    Products: false,
-    'Purchase Order': false,
-    'Damage Order': false,
+    Products: true,
     Supplier: false,
-    Setting: false,
   });
 
   const toggleExpand = (id: string) => {
@@ -177,7 +123,7 @@ export const PosSidebar: React.FC<PosSidebarProps> = ({
             <View className="px-4 py-3 border-b border-[#14233D]/60">
               <View className="flex-row items-center bg-[#102038] rounded-lg px-3 py-2 border border-[#1A2E4E]">
                 <Text className="text-slate-400 text-xs flex-1">Search</Text>
-                <View className="bg-[#1D68E2] px-2 py-1.5 rounded-md">
+                <View className="bg-emerald-600 px-2 py-1.5 rounded-md">
                   <PosIcon name="search" size={12} color="#FFFFFF" />
                 </View>
               </View>
@@ -202,6 +148,10 @@ export const PosSidebar: React.FC<PosSidebarProps> = ({
                       onPress={() => {
                         if (hasChildren) {
                           toggleExpand(item.id);
+                          if (item.id === 'Sales') {
+                            onSelectItem('Sales_List');
+                            onClose();
+                          }
                         } else {
                           onSelectItem(item.id);
                           onClose();

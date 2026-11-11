@@ -1,8 +1,28 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { MONTHLY_SALES_DATA, CATEGORY_PIE_DATA } from '@/constants/pos-data';
+import { CATEGORY_PIE_DATA } from '@/constants/pos-data';
+import { DashboardData } from '@/types/api-types';
 
-export const PosChartsSection: React.FC = () => {
+interface PosChartsSectionProps {
+  dashboardData?: DashboardData | null;
+  selectedYear?: string;
+  onSelectYear?: (year: string) => void;
+}
+
+export const PosChartsSection: React.FC<PosChartsSectionProps> = ({
+  dashboardData,
+  selectedYear = '2026',
+}) => {
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  const salesData = dashboardData?.sale || [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  const purchasesData = dashboardData?.purchase || [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  const stockInData = dashboardData?.stock_in || [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  const stockOutData = dashboardData?.stock_out || [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+  const maxSale = Math.max(...salesData, ...purchasesData, 1);
+  const maxStock = Math.max(...stockInData, ...stockOutData, 1);
+
   return (
     <View className="flex-col gap-4">
       {/* 1. Monthly Sales Overview */}
@@ -17,7 +37,7 @@ export const PosChartsSection: React.FC = () => {
             </Text>
           </View>
           <View className="px-2.5 py-1 rounded-md border border-slate-200 bg-slate-50">
-            <Text className="text-xs font-semibold text-slate-700">2026 ▾</Text>
+            <Text className="text-xs font-semibold text-slate-700">{selectedYear} ▾</Text>
           </View>
         </View>
 
@@ -35,23 +55,31 @@ export const PosChartsSection: React.FC = () => {
 
         {/* Bar chart representation */}
         <View className="h-40 flex-row items-end justify-between border-b border-l border-slate-200 pt-4 pb-1 pl-1">
-          {MONTHLY_SALES_DATA.map((item) => (
-            <View key={item.month} className="items-center flex-1">
-              <View className="flex-row items-end gap-1 h-28">
-                <View
-                  style={{ height: `${item.sales * 100}%` }}
-                  className="w-2 bg-[#5B50E5] rounded-t-sm"
-                />
-                <View
-                  style={{ height: `${item.purchases * 100}%` }}
-                  className="w-2 bg-[#93A5FF] rounded-t-sm"
-                />
+          {months.map((month, idx) => {
+            const saleVal = salesData[idx] || 0;
+            const purchVal = purchasesData[idx] || 0;
+
+            const saleH = Math.max((saleVal / maxSale) * 100, 4);
+            const purchH = Math.max((purchVal / maxSale) * 100, 4);
+
+            return (
+              <View key={month} className="items-center flex-1">
+                <View className="flex-row items-end gap-1 h-28">
+                  <View
+                    style={{ height: `${saleH}%` }}
+                    className="w-2 bg-[#5B50E5] rounded-t-sm"
+                  />
+                  <View
+                    style={{ height: `${purchH}%` }}
+                    className="w-2 bg-[#93A5FF] rounded-t-sm"
+                  />
+                </View>
+                <Text className="text-[10px] text-slate-400 mt-1 font-medium">
+                  {month}
+                </Text>
               </View>
-              <Text className="text-[10px] text-slate-400 mt-1 font-medium">
-                {item.month}
-              </Text>
-            </View>
-          ))}
+            );
+          })}
         </View>
       </View>
 
@@ -122,11 +150,15 @@ export const PosChartsSection: React.FC = () => {
         {/* Trend representation */}
         <View className="h-32 justify-between border-b border-l border-slate-200 pt-3 pb-1 pl-1">
           <View className="flex-row justify-between items-center h-24 px-2">
-            {MONTHLY_SALES_DATA.map((item, idx) => {
-              const inH = Math.round(item.sales * 70);
-              const outH = Math.round(item.purchases * 50);
+            {months.map((month, idx) => {
+              const inVal = stockInData[idx] || 0;
+              const outVal = stockOutData[idx] || 0;
+
+              const inH = Math.max(Math.round((inVal / maxStock) * 70), 4);
+              const outH = Math.max(Math.round((outVal / maxStock) * 50), 4);
+
               return (
-                <View key={item.month} className="items-center">
+                <View key={month} className="items-center">
                   <View className="h-20 justify-end items-center relative">
                     <View
                       style={{ height: inH }}
@@ -137,7 +169,7 @@ export const PosChartsSection: React.FC = () => {
                       className="w-1.5 bg-[#10B981] rounded-full opacity-80"
                     />
                   </View>
-                  <Text className="text-[9px] text-slate-400 mt-1">{item.month}</Text>
+                  <Text className="text-[9px] text-slate-400 mt-1">{month}</Text>
                 </View>
               );
             })}
@@ -147,4 +179,3 @@ export const PosChartsSection: React.FC = () => {
     </View>
   );
 };
-

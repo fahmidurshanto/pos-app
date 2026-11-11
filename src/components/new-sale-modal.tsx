@@ -9,27 +9,36 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { PosIcon } from '@/components/pos-icon';
-import { RECENT_PRODUCTS, ProductItem } from '@/constants/pos-data';
+import { ProductItem } from '@/constants/pos-data';
 
-interface CartItem extends ProductItem {
+export interface CartItem extends ProductItem {
   quantity: number;
 }
 
 interface NewSaleModalProps {
   visible: boolean;
   onClose: () => void;
-  onCompleteSale: (total: number, items: CartItem[]) => void;
+  products?: ProductItem[];
+  onCompleteSale: (total: number, items: CartItem[], customerName: string) => void;
 }
 
 export const NewSaleModal: React.FC<NewSaleModalProps> = ({
   visible,
   onClose,
+  products = [],
   onCompleteSale,
 }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [customerName, setCustomerName] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<'Cash' | 'Card' | 'Mobile Pay'>('Cash');
+
+  const filteredProducts = products.filter(
+    (p) =>
+      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.sku.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.category.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const addToCart = (product: ProductItem) => {
     setCart((prev) => {
@@ -59,7 +68,7 @@ export const NewSaleModal: React.FC<NewSaleModalProps> = ({
 
   const calculateSubtotal = () => {
     return cart.reduce((sum, item) => {
-      const priceNum = parseFloat(item.price.replace('$', '')) || 0;
+      const priceNum = parseFloat(String(item.price).replace(/[^0-9.]/g, '')) || 0;
       return sum + priceNum * item.quantity;
     }, 0);
   };
@@ -70,9 +79,10 @@ export const NewSaleModal: React.FC<NewSaleModalProps> = ({
 
   const handleFinish = () => {
     if (cart.length === 0) return;
-    onCompleteSale(total, cart);
+    onCompleteSale(total, cart, customerName);
     setCart([]);
     setCustomerName('');
+    setSearchQuery('');
     onClose();
   };
 
@@ -86,7 +96,9 @@ export const NewSaleModal: React.FC<NewSaleModalProps> = ({
           <View className="flex-row items-center justify-between pb-3 border-b border-slate-100">
             <View>
               <Text className="text-slate-900 text-lg font-bold">New Sale Checkout</Text>
-              <Text className="text-slate-400 text-xs">Point of Sale register</Text>
+              <Text className="text-slate-400 text-xs">
+                Select items from live products API
+              </Text>
             </View>
             <Pressable
               onPress={onClose}
@@ -97,40 +109,65 @@ export const NewSaleModal: React.FC<NewSaleModalProps> = ({
 
           <ScrollView className="flex-1 py-3" showsVerticalScrollIndicator={false}>
             {/* Customer input */}
-            <View className="mb-4">
-              <Text className="text-xs font-semibold text-slate-700 mb-1">Customer</Text>
+            <View className="mb-3">
+              <Text className="text-xs font-semibold text-slate-700 mb-1">
+                Customer Name / Phone
+              </Text>
               <TextInput
                 value={customerName}
                 onChangeText={setCustomerName}
-                placeholder="Walk-in Customer / Name"
+                placeholder="Walk-in Customer / Phone"
                 placeholderTextColor="#94A3B8"
                 className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-800"
               />
             </View>
 
-            {/* Quick Product Add */}
-            <Text className="text-xs font-semibold text-slate-700 mb-2">Quick Add Item</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} className="gap-2 mb-4">
-              {RECENT_PRODUCTS.map((prod) => (
-                <Pressable
-                  key={prod.id}
-                  onPress={() => addToCart(prod)}
-                  className="bg-slate-50 border border-slate-200 rounded-xl p-3 min-w-[130px] active:bg-indigo-50 active:border-indigo-300">
-                  <Text className="text-xs font-bold text-slate-800" numberOfLines={1}>
-                    {prod.name}
-                  </Text>
-                  <Text className="text-[11px] text-slate-400">{prod.sku}</Text>
-                  <Text className="text-xs font-bold text-indigo-600 mt-2">{prod.price}</Text>
-                </Pressable>
-              ))}
-            </ScrollView>
+            {/* Search products */}
+            <View className="mb-3">
+              <TextInput
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                placeholder="Search products by name, SKU or category..."
+                placeholderTextColor="#94A3B8"
+                className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800"
+              />
+            </View>
+
+            {/* Quick Product Add from Live API */}
+            <View className="flex-row justify-between items-center mb-1.5">
+              <Text className="text-xs font-semibold text-slate-700">
+                Products from Live API ({filteredProducts.length})
+              </Text>
+            </View>
+
+            {filteredProducts.length === 0 ? (
+              <View className="py-4 items-center justify-center bg-slate-50 rounded-xl mb-4 border border-dashed border-slate-200">
+                <Text className="text-xs text-slate-400">No products found</Text>
+              </View>
+            ) : (
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} className="gap-2 mb-4">
+                {filteredProducts.map((prod) => (
+                  <Pressable
+                    key={prod.id}
+                    onPress={() => addToCart(prod)}
+                    className="bg-slate-50 border border-slate-200 rounded-xl p-3 min-w-[130px] active:bg-emerald-50 active:border-emerald-300">
+                    <Text className="text-xs font-bold text-slate-800" numberOfLines={1}>
+                      {prod.name}
+                    </Text>
+                    <Text className="text-[10px] text-slate-400 font-mono">{prod.sku}</Text>
+                    <Text className="text-xs font-bold text-emerald-600 mt-2">{prod.price}</Text>
+                    <Text className="text-[9px] text-slate-400 mt-0.5">Stock: {prod.stock}</Text>
+                  </Pressable>
+                ))}
+              </ScrollView>
+            )}
 
             {/* Order Items Table */}
             <Text className="text-xs font-semibold text-slate-700 mb-2">
               Cart Items ({cart.length})
             </Text>
             {cart.length === 0 ? (
-              <View className="py-6 items-center justify-center bg-slate-50 rounded-xl border border-dashed border-slate-200">
+              <View className="py-6 items-center justify-center bg-slate-50 rounded-xl border border-dashed border-slate-200 mb-4">
                 <Text className="text-xs text-slate-400">Cart is empty. Tap an item above.</Text>
               </View>
             ) : (
@@ -174,7 +211,7 @@ export const NewSaleModal: React.FC<NewSaleModalProps> = ({
                     onPress={() => setPaymentMethod(method)}
                     className={`flex-1 py-2 rounded-xl border items-center ${
                       isSelected
-                        ? 'bg-[#1D68E2] border-[#1D68E2]'
+                        ? 'bg-emerald-600 border-emerald-600'
                         : 'bg-slate-50 border-slate-200'
                     }`}>
                     <Text
@@ -212,7 +249,7 @@ export const NewSaleModal: React.FC<NewSaleModalProps> = ({
             disabled={cart.length === 0}
             onPress={handleFinish}
             className={`py-3.5 rounded-xl items-center shadow-md ${
-              cart.length === 0 ? 'bg-slate-300' : 'bg-[#1D68E2] active:bg-blue-700'
+              cart.length === 0 ? 'bg-slate-300' : 'bg-emerald-600 active:bg-emerald-700'
             }`}>
             <Text className="text-white text-sm font-bold">
               Complete Sale • ${total.toFixed(2)}
@@ -223,4 +260,3 @@ export const NewSaleModal: React.FC<NewSaleModalProps> = ({
     </Modal>
   );
 };
-
