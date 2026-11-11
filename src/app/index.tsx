@@ -1,98 +1,106 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { StatusBar } from 'expo-status-bar';
+import { Alert, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import { AddProductModal } from '@/components/add-product-modal';
+import { NewSaleModal } from '@/components/new-sale-modal';
+import { PosChartsSection } from '@/components/pos-charts-section';
+import { PosFooter } from '@/components/pos-footer';
+import { PosHeader } from '@/components/pos-header';
+import { PosKpiGrid } from '@/components/pos-kpi-grid';
+import { PosSidebar } from '@/components/pos-sidebar';
+import { PosTablesSection } from '@/components/pos-tables-section';
+import { KPI_DATA, RECENT_PRODUCTS, ProductItem } from '@/constants/pos-data';
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
+export default function DashboardScreen() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeMenu, setActiveMenu] = useState('Dashboard');
+  const [products, setProducts] = useState<ProductItem[]>(RECENT_PRODUCTS);
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [newSaleModalOpen, setNewSaleModalOpen] = useState(false);
+
+  const handleAddProduct = (newProduct: Omit<ProductItem, 'id'>) => {
+    const product: ProductItem = {
+      ...newProduct,
+      id: Date.now().toString(),
+    };
+    setProducts((prev) => [product, ...prev]);
+    Alert.alert('Success', `"${product.name}" added to inventory.`);
+  };
+
+  const handleMenuSelect = (item: string) => {
+    setActiveMenu(item);
+    if (item === 'Sales_New') {
+      setNewSaleModalOpen(true);
+    } else if (item === 'Products_List') {
+      setAddModalOpen(true);
+    } else {
+      Alert.alert('Section Opened', `Navigated to ${item}`);
+    }
+  };
+
   return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
+    <SafeAreaView className="flex-1 bg-[#F8FAFC]" edges={['top', 'left', 'right']}>
+      <StatusBar style="dark" />
+
+      {/* Top Header */}
+      <PosHeader onOpenSidebar={() => setSidebarOpen(true)} />
+
+      {/* Drawer / Sidebar Modal with all submenus */}
+      <PosSidebar
+        visible={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        activeItem={activeMenu}
+        onSelectItem={handleMenuSelect}
+      />
+
+      {/* Add Product Modal */}
+      <AddProductModal
+        visible={addModalOpen}
+        onClose={() => setAddModalOpen(false)}
+        onAdd={handleAddProduct}
+      />
+
+      {/* New Sale Modal */}
+      <NewSaleModal
+        visible={newSaleModalOpen}
+        onClose={() => setNewSaleModalOpen(false)}
+        onCompleteSale={(total) => {
+          Alert.alert('Sale Completed', `Payment received: $${total.toFixed(2)}`);
+        }}
+      />
+
+      {/* Scrollable Dashboard Body */}
+      <ScrollView
+        className="flex-1 px-4 py-4"
+        contentContainerStyle={{ paddingBottom: 40 }}
+        showsVerticalScrollIndicator={false}>
+        {/* KPI Cards */}
+        <View className="mb-4">
+          <PosKpiGrid cards={KPI_DATA} />
+        </View>
+
+        {/* Charts & Graphs */}
+        <View className="mb-4">
+          <PosChartsSection />
+        </View>
+
+        {/* Recent Products Table & Low Stock Alerts */}
+        <View className="mb-4">
+          <PosTablesSection
+            products={products}
+            onOpenAddModal={() => setAddModalOpen(true)}
+            onViewAllAlerts={() => {
+              setActiveMenu('Damage_ExpirationList');
+              Alert.alert('Alerts', 'Showing low stock and restocking alerts.');
+            }}
+          />
+        </View>
+
+        {/* Footer */}
+        <PosFooter />
+      </ScrollView>
+    </SafeAreaView>
   );
 }
-
-export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
-
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
-
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
-  },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
-  },
-  title: {
-    textAlign: 'center',
-  },
-  code: {
-    textTransform: 'uppercase',
-  },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
-  },
-});
