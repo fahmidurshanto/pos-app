@@ -13,6 +13,7 @@ import { PosSidebar } from '@/components/pos-sidebar';
 import { PosTablesSection } from '@/components/pos-tables-section';
 import { SalesOrderListScreen } from '@/components/sales-order-list-screen';
 import { SaleOrderScreen } from '@/components/sale-order-screen';
+import { ProductListScreen } from '@/components/product-list-screen';
 import { CategoryListScreen } from '@/components/category-list-screen';
 import { SubCategoryListScreen } from '@/components/sub-category-list-screen';
 import { UnitListScreen } from '@/components/unit-list-screen';
@@ -114,9 +115,6 @@ export default function DashboardScreen() {
 
   const handleMenuSelect = (item: string) => {
     setActiveMenu(item);
-    if (item === 'Products_List') {
-      setAddModalOpen(true);
-    }
   };
 
   return (
@@ -160,12 +158,17 @@ export default function DashboardScreen() {
           <SalesOrderListScreen onNewOrder={() => setActiveMenu('Sales_New')} />
           <PosFooter />
         </ScrollView>
-      ) : activeMenu === 'Sales_New' ? (
+      ) : activeMenu === 'Sale_Order' || activeMenu === 'Sales_New' ? (
         <ScrollView className="flex-1">
           <SaleOrderScreen
             products={products}
             onOrderSubmitted={() => setActiveMenu('Sales_List')}
           />
+          <PosFooter />
+        </ScrollView>
+      ) : activeMenu === 'Products_List' ? (
+        <ScrollView className="flex-1">
+          <ProductListScreen onOpenAddModal={() => setAddModalOpen(true)} />
           <PosFooter />
         </ScrollView>
       ) : activeMenu === 'Products_Category' ? (

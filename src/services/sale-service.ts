@@ -25,7 +25,7 @@ export interface SaleOrderPayload {
 
 export const saleService = {
   // GET Sales List (Endpoint: /api/v1/sales)
-  async getSales(company: string = API_CONFIG.DEFAULT_COMPANY, search?: string) {
+  async getSales(company: string = API_CONFIG.SALES_COMPANY, search?: string) {
     return apiClient('/api/v1/sales', {
       method: 'GET',
       params: { company, search },
@@ -36,8 +36,7 @@ export const saleService = {
   async createSale(payload: SaleOrderPayload) {
     return apiClient('/api/v1/sales', {
       method: 'POST',
-      body: payload,
+      body: { ...payload, company: payload.company || API_CONFIG.SALES_COMPANY },
     });
   },
 };
-
