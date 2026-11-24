@@ -1,5 +1,5 @@
 import { apiClient } from '@/services/api-client';
-import { API_CONFIG } from '@/constants/api';
+import { authStorage } from '@/utils/auth-storage';
 import { ApiProduct } from '@/types/api-types';
 
 export interface CreateProductPayload {
@@ -14,21 +14,23 @@ export interface CreateProductPayload {
   margin?: string;
   description?: string;
   barcode?: string;
-  company: string;
+  company?: string;
 }
 
 export const productService = {
-  async getProducts(company: string = API_CONFIG.DEFAULT_COMPANY, name?: string) {
+  async getProducts(company?: string, name?: string) {
+    const targetCompany = company || authStorage.getActiveCompany();
     return apiClient<ApiProduct[]>('/api/v1/products', {
       method: 'GET',
-      params: { company, auto: 1, name },
+      params: { company: targetCompany, auto: 1, name },
     });
   },
 
   async createProduct(payload: CreateProductPayload) {
+    const targetCompany = payload.company || authStorage.getActiveCompany();
     return apiClient('/api/v1/products', {
       method: 'POST',
-      body: payload,
+      body: { ...payload, company: targetCompany },
     });
   },
 
@@ -46,4 +48,3 @@ export const productService = {
     });
   },
 };
-

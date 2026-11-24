@@ -1,0 +1,951 @@
+BASE_URL='https://bditpark.com/luxury'
+API :1
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/login
+Method: POST
+String: {"username":"admin@bditpark.com","password":"123456"}
+Response:
+{
+    "error": "False",
+    "code": "200",
+    "message": "Success",
+    "data": {
+        "employee": {
+            "id": "361",
+            "first_name": "Admin",
+            "last_name": "BDIT",
+            "email": "admin@bditpark.com",
+            "mobile": "784596258",
+            "image": null,
+            "status": "1",
+            "company": "361",
+            "created_on": "2026-08-10 09:17:39",
+            "updated_on": "2026-11-10 20:23:17"
+        },
+        "company": {
+            "logo": "https://carenoviq.ca/uploads/employees/thumb/361_1787759840_employee.jpg",
+            "organiz": "BDITPARK",
+            "colors": "#a82f2f",
+            "lat": "53.4627316576",
+            "lng": "-113.4292061078"
+        },
+        "privilise": [
+            {
+                "roleid": "8",
+                "role": "COMP",
+                "details": "Organization Super Admin",
+                "var_name": "isCOMP",
+                "mview": "1",
+                "madd": "1",
+                "medit": "1",
+                "mdelete": "1"
+            }
+        ],
+        "role": "isCOMP",
+        "roles": [
+            {
+                "id": "1",
+                "role": "ADMIN",
+                "status": "0",
+                "tag": "0",
+                "company": "0",
+                "details": "Super Admin",
+                "var_name": "isAdmin",
+                "seq": "0"
+            },
+            {
+                "id": "2",
+                "role": "CEO",
+                "status": "1",
+                "tag": "3",
+                "company": "0",
+                "details": "Admin Role",
+                "var_name": "isCEO",
+                "seq": "1"
+            },
+            {
+                "id": "8",
+                "role": "COMP",
+                "status": "1",
+                "tag": "3",
+                "company": "0",
+                "details": "Organization Super Admin",
+                "var_name": "isCOMP",
+                "seq": "0"
+            },
+            {
+                "id": "9",
+                "role": "EMP",
+                "status": "1",
+                "tag": "4",
+                "company": "4",
+                "details": "Employee Management",
+                "var_name": "",
+                "seq": "1"
+            },
+            {
+                "id": "11",
+                "role": "SET",
+                "status": "1",
+                "tag": "4",
+                "company": "0",
+                "details": "Project Setting",
+                "var_name": "isSET",
+                "seq": "0"
+            },
+            {
+                "id": "12",
+                "role": "PRODUCT",
+                "status": "1",
+                "tag": "4",
+                "company": "0",
+                "details": "Product Management",
+                "var_name": "isPRODUCT",
+                "seq": "0"
+            },
+            {
+                "id": "13",
+                "role": "PO",
+                "status": "1",
+                "tag": "4",
+                "company": "0",
+                "details": "Purchase Order",
+                "var_name": "isPO",
+                "seq": "0"
+            },
+            {
+                "id": "14",
+                "role": "SUPPLIER",
+                "status": "1",
+                "tag": "4",
+                "company": "0",
+                "details": "Supplier account Management",
+                "var_name": "isSUPPLIER",
+                "seq": "0"
+            },
+            {
+                "id": "15",
+                "role": "SALE",
+                "status": "1",
+                "tag": "4",
+                "company": "0",
+                "details": "Sales Management",
+                "var_name": "isSALE",
+                "seq": "0"
+            },
+            {
+                "id": "16",
+                "role": "CUST",
+                "status": "1",
+                "tag": "4",
+                "company": "0",
+                "details": "Customer Management",
+                "var_name": "isCUST",
+                "seq": "0"
+            },
+            {
+                "id": "17",
+                "role": "ACCOUNT",
+                "status": "1",
+                "tag": "4",
+                "company": "0",
+                "details": "Account Management",
+                "var_name": "isACCOUNT",
+                "seq": "0"
+            },
+            {
+                "id": "18",
+                "role": "REPORT",
+                "status": "1",
+                "tag": "4",
+                "company": "0",
+                "details": "Report Management",
+                "var_name": "isREPORT",
+                "seq": "0"
+            }
+        ]
+    }
+}
+
+
+API :2
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/dashboard
+Method: GET
+Request:company,year
+
+Response:
+{"stock_out":[0,0,0,0,0,0,0,0,0,0,0,0],"stock_in":[0,0,0,0,0,0,0,0,0,0,0,0],"purchase":[0,0,0,0,0,0,0,0,0,0,0,0],"sale":[0,0,0,0,0,0,0,0,0,0,0,0],"month":{"1":"Jan","2":"Feb","3":"Mar","4":"Apr","5":"May","6":"Jun","7":"Jul","8":"Aug","9":"Sep","10":"Oct","11":"Nov","12":"Dec"}}
+
+
+
+
+API :3
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/suppliers
+Method: GET
+Parameter : company
+Response:
+{
+    "error": "False",
+    "UpdateID": "29",
+    "code": "200",
+    "message": "Update Success"
+}
+
+
+
+API :4
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/suppliers
+Method: POST
+Request String :{"supplier":"saha traders ltd","mobile":"01672794470","address":"201 Batar more Naogaon","email":"shahaltd@gmail.com","company":"4","zip_code":"6500"}
+Response:
+{
+    "error": "False",
+    "RowID": 21,
+    "code": "200",
+    "message": "Success"
+}
+
+
+API :5
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/suppliers
+Method: PUT
+Request String :{"row_id":"21","supplier":"saha traders ltd","mobile":"01672794470","address":"201 Batar more Naogaon","email":"shahaltd@gmail.com","company":"4","zip_code":"6500"}
+Response:
+{
+    "error": "False",
+    "RowID": 21,
+    "code": "200",
+    "message": "Success"
+}
+
+API :6
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/suppliers
+Method: PATCH
+Request String :{"row_id":"21"}
+Response:
+{
+    "error": "False",
+    "RowID": 21,
+    "code": "200",
+    "message": "Delete Success"
+}
+
+
+API :7
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/category
+Method: GET
+Parameter : company
+Response:
+{
+    "error": "False",
+    "code": "200",
+    "message": "Success",
+    "data": [
+        {
+            "id": "101",
+            "category": "SANITARY",
+            "status": "1",
+            "company": "4",
+            "types": "1",
+            "sequence": "0",
+            "created_on": "2026-10-31 10:03:53",
+            "updated_on": "2026-11-10 20:17:52"
+        },
+        {
+            "id": "81",
+            "category": "TAILS",
+            "status": "1",
+            "company": "4",
+            "types": "1",
+            "sequence": "0",
+            "created_on": "2026-10-28 14:20:56",
+            "updated_on": "2026-11-10 20:17:25"
+        }
+    ],
+    "pages": {
+        "centerpage": "",
+        "total_page": 1,
+        "total_row": 2,
+        "offset": 0
+    }
+}
+
+
+
+API :8
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/category
+Method: POST
+Request String :{"category":"category 1","company":"4","status":"1"}
+Response:
+{
+    "error": "False",
+    "RowID": 21,
+    "code": "200",
+    "message": "Success"
+}
+
+
+API :9
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/category
+Method: PUT
+Request String :{"row_id":"21","category":"category 1","company":"4","status":"1"}
+Response:
+{
+    "error": "False",
+    "RowID": 21,
+    "code": "200",
+    "message": "Success"
+}
+
+API :10
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/category
+Method: PATCH
+Request String :{"row_id":"21"}
+Response:
+{
+    "error": "False",
+    "RowID": 21,
+    "code": "200",
+    "message": "Delete Success"
+}
+
+
+
+API :11
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/subcats
+Method: GET
+Parameter : company
+Response:
+{
+    "error": "False",
+    "code": "200",
+    "message": "Success",
+    "data": [
+        {
+            "id": "34",
+            "category_id": "101",
+            "subcat": "CONCIL KEY",
+            "status": "1",
+            "company": "4",
+            "sequence": "0",
+            "created_on": "2026-11-10 20:15:41",
+            "updated_on": "2026-11-10 20:15:41",
+            "category": "SANITARY"
+        },
+        {
+            "id": "33",
+            "category_id": "101",
+            "subcat": "CORNAR SELF",
+            "status": "1",
+            "company": "4",
+            "sequence": "0",
+            "created_on": "2026-11-09 02:57:40",
+            "updated_on": "2026-11-10 20:16:16",
+            "category": "SANITARY"
+        },
+        {
+            "id": "32",
+            "category_id": "101",
+            "subcat": "LEQUED BOX",
+            "status": "1",
+            "company": "4",
+            "sequence": "0",
+            "created_on": "2026-11-09 02:56:33",
+            "updated_on": "2026-11-10 20:16:43",
+            "category": "SANITARY"
+        },
+        {
+            "id": "31",
+            "category_id": "101",
+            "subcat": "TISSU BOX",
+            "status": "1",
+            "company": "4",
+            "sequence": "0",
+            "created_on": "2026-11-09 02:55:48",
+            "updated_on": "2026-11-10 20:18:43",
+            "category": "SANITARY"
+        },
+        {
+            "id": "30",
+            "category_id": "101",
+            "subcat": "SOAP CASE",
+            "status": "1",
+            "company": "4",
+            "sequence": "0",
+            "created_on": "2026-11-09 02:55:09",
+            "updated_on": "2026-11-10 20:19:57",
+            "category": "SANITARY"
+        },
+        {
+            "id": "29",
+            "category_id": "101",
+            "subcat": "MAGIK PIPE",
+            "status": "1",
+            "company": "4",
+            "sequence": "0",
+            "created_on": "2026-11-09 02:53:22",
+            "updated_on": "2026-11-10 20:20:48",
+            "category": "SANITARY"
+        }
+    ],
+    "pages": {
+        "centerpage": "",
+        "total_page": 2,
+        "total_row": 34,
+        "offset": 0
+    }
+}
+
+
+
+API :12
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/subcats
+Method: POST
+Request String :{"subcat":"subcat 1","company":"4","category_id":"29"}
+Response:
+{
+    "error": "False",
+    "RowID": 21,
+    "code": "200",
+    "message": "Success"
+}
+
+
+API :13
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/subcats
+Method: PUT
+Request String :{"row_id":"21","subcat":"subcat 1","company":"4","category_id":"29"}
+Response:
+{
+    "error": "False",
+    "RowID": 21,
+    "code": "200",
+    "message": "Success"
+}
+
+API :14
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/subcats
+Method: PATCH
+Request String :{"row_id":"21"}
+Response:
+{
+    "error": "False",
+    "RowID": 21,
+    "code": "200",
+    "message": "Delete Success"
+}
+
+API :15
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/units
+Method: GET
+Parameter : company,auto,name
+Response:
+{
+    "error": "False",
+    "code": "200",
+    "message": "Success",
+    "data": [
+        {
+            "id": "11",
+            "unit": "Litar",
+            "qty": "0",
+            "company": "4",
+            "status": "1",
+            "created_on": "2026-10-31 10:05:25",
+            "updated_on": "2026-10-31 10:05:25"
+        },
+        {
+            "id": "9",
+            "unit": "Peace",
+            "qty": "1",
+            "company": "4",
+            "status": "1",
+            "created_on": "2026-08-31 21:59:33",
+            "updated_on": "2026-11-08 07:23:30"
+        },
+        {
+            "id": "8",
+            "unit": "Feet",
+            "qty": "0",
+            "company": "4",
+            "status": "1",
+            "created_on": "2026-08-20 18:30:21",
+            "updated_on": "2026-10-28 16:20:13"
+        },
+        {
+            "id": "7",
+            "unit": "Box",
+            "qty": "0",
+            "company": "4",
+            "status": "1",
+            "created_on": "2026-08-20 18:30:21",
+            "updated_on": "2026-11-08 07:23:39"
+        },
+        {
+            "id": "6",
+            "unit": "KG",
+            "qty": "0",
+            "company": "4",
+            "status": "1",
+            "created_on": "2026-08-20 18:30:21",
+            "updated_on": "2026-10-28 16:21:41"
+        },
+        {
+            "id": "5",
+            "unit": "Liter",
+            "qty": "0",
+            "company": "4",
+            "status": "1",
+            "created_on": "2026-08-20 15:15:34",
+            "updated_on": "2026-11-08 07:23:14"
+        },
+        {
+            "id": "4",
+            "unit": "Goj",
+            "qty": "0",
+            "company": "4",
+            "status": "1",
+            "created_on": "2026-08-20 15:15:34",
+            "updated_on": "2026-11-08 07:23:03"
+        }
+    ],
+    "pages": {
+        "centerpage": "",
+        "total_page": 1,
+        "total_row": 10,
+        "offset": 0
+    }
+}
+
+
+
+API :16
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/units
+Method: POST
+Request String :{"unit":"unit 1","company":"4"}
+Response:
+{
+    "error": "False",
+    "RowID": 21,
+    "code": "200",
+    "message": "Success"
+}
+
+
+API :17
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/units
+Method: PUT
+Request String :{"row_id":"21","unit":"unit 1","company":"4"}
+Response:
+{
+    "error": "False",
+    "RowID": 21,
+    "code": "200",
+    "message": "Success"
+}
+
+API :18
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/units
+Method: PATCH
+Request String :{"row_id":"21"}
+Response:
+{
+    "error": "False",
+    "RowID": 21,
+    "code": "200",
+    "message": "Delete Success"
+}
+
+
+API :19
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/products
+Method: GET
+Parameter : company,auto,name
+Response:
+{
+    "error": "False",
+    "code": "200",
+    "message": "Success",
+    "data": [
+        {
+            "id": "71",
+            "category_id": "101",
+            "subcat_id": "0",
+            "unit_id": "9",
+            "brand_id": "561",
+            "product": "WASTE",
+            "status": "1",
+            "company": "4",
+            "description": "",
+            "buy_price": "43",
+            "margin": "0",
+            "sale_price": "60",
+            "sizes": null,
+            "image": "",
+            "thumb": "",
+            "supplier_id": "0",
+            "barcode": "",
+            "sku": "5\" ss",
+            "created_on": "2026-11-10 19:04:17",
+            "updated_on": "2026-11-10 20:40:45",
+            "supplier": null,
+            "unit": "Peace",
+            "category": "SANITARY",
+            "brand": "National polimar",
+            "stock": 0
+        }
+    ],
+    "pages": {
+        "centerpage": "",
+        "total_page": 1,
+        "total_row": 1,
+        "offset": 0
+    }
+}
+
+
+
+API :20
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/products
+Method: POST
+Request String :{"product":"PVC Pipe","sku":"12006","category_id":"70","subcat_id":"70","description":"ddd","buy_price":"780","margin":"5","sale_price":"1200","brand_id":"537","unit_id":"1","barcode":"7894562","company":"4"}
+Response:
+{
+    "error": "False",
+    "RowID": 21,
+    "code": "200",
+    "message": "Success"
+}
+
+
+API :21
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/products
+Method: PUT
+Request String :{"row_id":"21","product":"PVC Pipe","sku":"12006","category_id":"70","subcat_id":"70","description":"ddd","buy_price":"780","margin":"5","sale_price":"1200","brand_id":"537","unit_id":"1","barcode":"7894562","company":"4"}
+Response:
+{
+    "error": "False",
+    "RowID": 21,
+    "code": "200",
+    "message": "Success"
+}
+
+API :22
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/products
+Method: PATCH
+Request String :{"row_id":"21"}
+Response:
+{
+    "error": "False",
+    "RowID": 21,
+    "code": "200",
+    "message": "Delete Success"
+}
+
+
+API :23
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/purchases
+Method: GET
+Parameter : company,auto,name,supplier_id,row_id,date_from,date_to
+	
+Response:
+{
+    "error": "False",
+    "code": "200",
+    "message": "Success",
+    "data": [
+        {
+            "id": "30",
+            "user_id": "361",
+            "supplier_id": "48",
+            "company": "361",
+            "order_no": "260001",
+            "date": "2026-11-22",
+            "tax": "0",
+            "status": "2",
+            "discount": "0",
+            "total_amount": "229000",
+            "note": "This is the first order ",
+            "paid": "229000",
+            "due": "0",
+            "created_on": "2026-11-24 08:00:17",
+            "updated_on": "2026-11-24 08:00:17",
+            "supplier": "Joly Traders Ltd",
+            "worker": "Admin BDIT"
+        }
+    ],
+    "pages": {
+        "centerpage": "",
+        "total_page": 1,
+        "total_row": 1,
+        "offset": 0
+    }
+}
+
+
+API :24
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/purchases
+Method: POST
+String : {"supplier_id":"48","date":"2026-11-22 00:00:00","note":"This is the first order ","paid":"229000.00","Due":"","user_id":"361","company":"361","products":{"product_id":["",""],"product":["24\" floor Tails","8 X 12\" Bathroom Taile"],"sku":["101","102"],"brands":["574","574"],"units":["12","12"],"qty":["500","1000"],"rate":["420","19"],"sale":["0","0"],"total":["210000.00","19000.00"]}}
+	
+Response:
+{
+    "error": "False",
+    "code": "200",
+    "message": "Success",
+    "NewID": "30"
+}
+
+
+API :25
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/purchases
+Method: PUT
+String : {"row_id":"30","supplier_id":"48","date":"2026-11-22 00:00:00","note":"This is the first order ","paid":"229000.00","Due":"","user_id":"361","company":"361","products":{"product_id":["",""],"product":["24\" floor Tails","8 X 12\" Bathroom Taile"],"sku":["101","102"],"brands":["574","574"],"units":["12","12"],"qty":["500","1000"],"rate":["420","19"],"sale":["0","0"],"total":["210000.00","19000.00"]}}
+	
+Response:
+{
+    "error": "False",
+    "code": "200",
+    "message": "Success",
+    "UpdateID": "30"
+}
+
+API :26
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/purchases
+Method: PATCH
+String : {"row_id":"30"}
+	
+Response:
+{
+    "error": "False",
+    "code": "200",
+    "message": "Delete Success",
+    "RowID": "30"
+}
+
+
+API :27
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/postToAccount
+Method: GET
+Param : company,row_id,user_id
+	
+Response:
+{
+    "error": "False",
+    "code": "200",
+    "message": "Success",
+    "data": {
+        "payable_id": [
+            53,
+            54
+        ],
+        "account_id": [
+            27
+        ],
+        "inventory_id": [
+            182,
+            183
+        ]
+    }
+}
+
+
+API :28
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/sales
+Method: GET
+Param : company,row_id,user_id,date_from,date_to,name
+	
+Response:
+{
+    "error": "False",
+    "code": "200",
+    "message": "Success",
+    "data": [
+        {
+            "id": "3",
+            "user_id": "361",
+            "customer_id": "1",
+            "company": "361",
+            "order_no": "260003",
+            "date": "2026-11-24",
+            "tax": "0",
+            "status": "1",
+            "discount": "30",
+            "due": "0",
+            "total_amount": "25280",
+            "paid": "25250",
+            "note": "This is test",
+            "created_on": "2026-11-24 08:39:41",
+            "updated_on": "2026-11-24 08:39:41",
+            "customer": "Shanto",
+            "mobile": "01640301028",
+            "address": "Joypurhat",
+            "email": "",
+            "worker": "Admin BDIT"
+        }
+    ],
+    "pages": {
+        "centerpage": "",
+        "total_page": 1,
+        "total_row": 3,
+        "offset": 0
+    }
+}
+
+
+API :29
+Set Header
+x-api-key:GF!2#m6sb$y%9jd&7SU9M$~! 
+Accept: 'application/json';
+Content-type: 'application/json';
+
+End Point: BASE_URL/api/v1/sales
+Method: POST
+String : {"customer":"Shanto","mobile":"01640301028","address":"Joypurhat","date":"2026-11-24 00:00:00","note":"This is test","total_amount":"25280.00","discount":"30","paid":"25250","due":"0.00","user_id":"361","company":"361","products":{"product_id":["215","216"],"rate":["448","24"],"qty":["50","120"],"total":["22400.00","2880.00"]}}
+	
+Response:
+{
+    "error": "False",
+    "code": "200",
+    "message": "Success",
+    "RowID": "1"
+}

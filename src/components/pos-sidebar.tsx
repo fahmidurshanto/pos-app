@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, Pressable, ScrollView, Modal, SafeAreaView } from 'react-native';
+import { View, Text, Pressable, ScrollView, Modal, SafeAreaView, Image } from 'react-native';
 import { PosIcon, IconName } from '@/components/pos-icon';
+import { useAuth } from '@/context/auth-context';
 
 interface PosSidebarProps {
   visible: boolean;
@@ -38,7 +39,7 @@ export const MENU_ITEMS: MenuItem[] = [
     ],
   },
 
-  // 3. Products & Inventory (API 7-10: category, API 11-14: subcats, API 15-18: units, API 19-22: products)
+  // 3. Products & Inventory (API 7-10: category, API 11-14: subcats, API 15-18: units, API 19-22: products, Brands)
   {
     id: 'Products',
     title: 'Products',
@@ -48,10 +49,22 @@ export const MENU_ITEMS: MenuItem[] = [
       { id: 'Products_Category', title: 'Category' },
       { id: 'Products_SubCategory', title: 'Sub Category' },
       { id: 'Products_Units', title: 'Units' },
+      { id: 'Products_Brands', title: 'Brands' },
     ],
   },
 
-  // 4. Supplier (API 3-6: suppliers CRUD)
+  // 4. Purchase Order (API 23-26: purchases CRUD, API 27: postToAccount)
+  {
+    id: 'PurchaseOrder',
+    title: 'Purchase Order',
+    icon: 'shopping-cart',
+    children: [
+      { id: 'Purchase_List', title: 'Purchase List' },
+      { id: 'Purchase_New', title: 'New Order' },
+    ],
+  },
+
+  // 5. Supplier (API 3-6: suppliers CRUD)
   {
     id: 'Supplier',
     title: 'Supplier',
@@ -68,9 +81,11 @@ export const PosSidebar: React.FC<PosSidebarProps> = ({
   activeItem,
   onSelectItem,
 }) => {
+  const { user, company, logout } = useAuth();
   const [expanded, setExpanded] = React.useState<Record<string, boolean>>({
     Sales: true,
     Products: true,
+    PurchaseOrder: true,
     Supplier: false,
   });
 
@@ -89,15 +104,28 @@ export const PosSidebar: React.FC<PosSidebarProps> = ({
       <View className="flex-1 flex-row bg-black/60">
         <SafeAreaView className="flex-1 flex-row">
           <View className="w-80 bg-[#0B1A30] flex-1 flex-col border-r border-[#162744]">
-            {/* Header: POS Brand */}
+            {/* Header: POS Brand with Company Logo / Name */}
             <View className="flex-row items-center justify-between px-5 py-4 border-b border-[#14233D]">
               <View className="flex-row items-center gap-3">
-                <View className="w-9 h-9 rounded-full bg-[#17253D] items-center justify-center border border-slate-700 shadow-sm">
-                  <Text className="text-white font-extrabold text-xs tracking-wider">POS</Text>
+                {company?.logo ? (
+                  <Image
+                    source={{ uri: company.logo }}
+                    className="w-9 h-9 rounded-full bg-[#17253D] border border-slate-700"
+                    resizeMode="cover"
+                  />
+                ) : (
+                  <View className="w-9 h-9 rounded-full bg-[#17253D] items-center justify-center border border-slate-700 shadow-sm">
+                    <Text className="text-white font-extrabold text-xs tracking-wider">POS</Text>
+                  </View>
+                )}
+                <View>
+                  <Text className="text-white font-black text-lg tracking-wider">
+                    {company?.organiz || 'POS'}
+                  </Text>
+                  <Text className="text-[10px] text-emerald-400 font-semibold uppercase tracking-wider">
+                    Luxury System
+                  </Text>
                 </View>
-                <Text className="text-white font-black text-xl tracking-wider">
-                  POS
-                </Text>
               </View>
               <Pressable
                 onPress={onClose}
@@ -108,14 +136,28 @@ export const PosSidebar: React.FC<PosSidebarProps> = ({
 
             {/* User profile & Logout */}
             <View className="px-5 py-3.5 border-b border-[#14233D] flex-row items-center justify-between">
-              <View className="flex-row items-center gap-3">
-                <View className="w-9 h-9 rounded-full bg-slate-300 items-center justify-center">
-                  <Text className="text-slate-800 font-bold text-xs">U</Text>
+              <View className="flex-row items-center gap-3 flex-1 pr-2">
+                <View className="w-9 h-9 rounded-full bg-emerald-600/30 border border-emerald-500/50 items-center justify-center">
+                  <Text className="text-emerald-400 font-bold text-xs">
+                    {user ? `${user.first_name[0]}${user.last_name ? user.last_name[0] : ''}` : 'U'}
+                  </Text>
                 </View>
-                <Text className="text-slate-200 text-sm font-semibold">Logout</Text>
+                <View className="flex-1">
+                  <Text className="text-slate-200 text-xs font-bold" numberOfLines={1}>
+                    {user ? `${user.first_name} ${user.last_name || ''}` : 'Admin BDIT'}
+                  </Text>
+                  <Text className="text-slate-400 text-[10px]" numberOfLines={1}>
+                    {user?.email || 'admin@bditpark.com'}
+                  </Text>
+                </View>
               </View>
-              <Pressable className="p-1 rounded hover:bg-[#14243D]">
-                <PosIcon name="log-out" size={17} color="#64748B" />
+              <Pressable
+                onPress={() => {
+                  onClose();
+                  logout();
+                }}
+                className="p-1.5 rounded-lg bg-[#14243D] active:bg-rose-950/40">
+                <PosIcon name="log-out" size={16} color="#F43F5E" />
               </Pressable>
             </View>
 

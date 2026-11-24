@@ -79,6 +79,15 @@ export interface ApiUnit {
   updated_on?: string;
 }
 
+export interface ApiBrand {
+  id: string;
+  brand: string;
+  status: string;
+  company: string;
+  created_on?: string;
+  updated_on?: string;
+}
+
 export interface ApiProduct {
   id: string;
   category_id: string;
@@ -117,4 +126,46 @@ export interface ApiSupplier {
   company: string;
   zip_code: string;
 }
+
+export interface ApiPurchaseItem {
+  id: string;
+  user_id: string;
+  supplier_id: string;
+  company: string;
+  order_no: string;
+  date: string;
+  tax: string;
+  status: string;
+  discount: string;
+  total_amount: string;
+  note: string;
+  paid: string;
+  due: string;
+  created_on: string;
+  updated_on: string;
+  supplier: string;
+  worker: string;
+}
+
+export interface CreatePurchasePayload {
+  supplier_id: string;
+  date: string;
+  note: string;
+  paid: string;
+  Due?: string;
+  user_id?: string;
+  company?: string;
+  products: {
+    product_id: string[];
+    product: string[];
+    sku: string[];
+    brands: string[];
+    units: string[];
+    qty: string[];
+    rate: string[];
+    sale: string[];
+    total: string[];
+  };
+}
+
 

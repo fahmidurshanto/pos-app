@@ -1,26 +1,29 @@
 import { apiClient } from '@/services/api-client';
-import { API_CONFIG } from '@/constants/api';
+import { authStorage } from '@/utils/auth-storage';
 import { ApiSupplier } from '@/types/api-types';
 
 export const supplierService = {
-  async getSuppliers(company: string = API_CONFIG.DEFAULT_COMPANY) {
+  async getSuppliers(company?: string) {
+    const targetCompany = company || authStorage.getActiveCompany();
     return apiClient<ApiSupplier[]>('/api/v1/suppliers', {
       method: 'GET',
-      params: { company },
+      params: { company: targetCompany },
     });
   },
 
   async createSupplier(payload: Omit<ApiSupplier, 'RowID' | 'id'>) {
+    const targetCompany = payload.company || authStorage.getActiveCompany();
     return apiClient('/api/v1/suppliers', {
       method: 'POST',
-      body: payload,
+      body: { ...payload, company: targetCompany },
     });
   },
 
   async updateSupplier(row_id: string | number, payload: Partial<ApiSupplier>) {
+    const targetCompany = payload.company || authStorage.getActiveCompany();
     return apiClient('/api/v1/suppliers', {
       method: 'PUT',
-      body: { row_id: String(row_id), ...payload },
+      body: { row_id: String(row_id), ...payload, company: targetCompany },
     });
   },
 
@@ -31,4 +34,3 @@ export const supplierService = {
     });
   },
 };
-

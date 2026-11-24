@@ -26,6 +26,8 @@ export type IconName =
   | 'trending-up'
   | 'trending-down'
   | 'clock'
+  | 'trash'
+  | 'arrow-left'
   | 'circle';
 
 interface PosIconProps {
@@ -185,6 +187,20 @@ function renderIconGlyph(name: IconName, size: number, color: string) {
         <View style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}>
           <View style={{ width: size * 0.7, height: 2, backgroundColor: color, borderRadius: 1 }} />
           <View style={{ width: 2, height: size * 0.7, backgroundColor: color, borderRadius: 1, position: 'absolute' }} />
+        </View>
+      );
+    case 'trash':
+      return (
+        <View style={{ width: size * 0.75, height: size * 0.85, alignItems: 'center', justifyContent: 'center' }}>
+          <View style={{ width: size * 0.8, height: 1.5, backgroundColor: color, marginBottom: 1 }} />
+          <View style={{ width: size * 0.6, height: size * 0.6, borderWidth: 1.5, borderColor: color, borderTopWidth: 0, borderRadius: 1 }} />
+        </View>
+      );
+    case 'arrow-left':
+      return (
+        <View style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}>
+          <View style={{ width: size * 0.7, height: 1.5, backgroundColor: color }} />
+          <View style={{ width: 5, height: 5, borderLeftWidth: 1.5, borderBottomWidth: 1.5, borderColor: color, transform: [{ rotate: '45deg' }], position: 'absolute', left: 2 }} />
         </View>
       );
     case 'circle':

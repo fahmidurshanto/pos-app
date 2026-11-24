@@ -27,6 +27,7 @@ export const ProductListScreen: React.FC<ProductListScreenProps> = ({
     setLoading(true);
     try {
       const res = await productService.getProducts(undefined, searchName.trim() || undefined);
+      console.log('📦 [ProductListScreen] Real Products from API:', JSON.stringify(res.data, null, 2));
       if (res.data && Array.isArray(res.data)) {
         setProducts(res.data);
       } else {

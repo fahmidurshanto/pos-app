@@ -1,12 +1,14 @@
 import React from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { PosIcon } from '@/components/pos-icon';
+import { useAuth } from '@/context/auth-context';
 
 interface PosHeaderProps {
   onOpenSidebar: () => void;
 }
 
 export const PosHeader: React.FC<PosHeaderProps> = ({ onOpenSidebar }) => {
+  const { logout } = useAuth();
   return (
     <View className="bg-white px-4 py-3 border-b border-slate-200 flex-row items-center justify-between shadow-sm">
       {/* Left: Hamburger menu & Links */}
@@ -44,8 +46,8 @@ export const PosHeader: React.FC<PosHeaderProps> = ({ onOpenSidebar }) => {
           <PosIcon name="maximize" size={14} color="#64748B" />
         </Pressable>
 
-        <Pressable className="p-1.5 rounded-full">
-          <PosIcon name="grid" size={14} color="#64748B" />
+        <Pressable onPress={logout} className="p-1.5 rounded-full bg-slate-100 active:bg-rose-100">
+          <PosIcon name="log-out" size={14} color="#EF4444" />
         </Pressable>
       </View>
     </View>

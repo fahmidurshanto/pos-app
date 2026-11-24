@@ -17,14 +17,20 @@ import { ProductListScreen } from '@/components/product-list-screen';
 import { CategoryListScreen } from '@/components/category-list-screen';
 import { SubCategoryListScreen } from '@/components/sub-category-list-screen';
 import { UnitListScreen } from '@/components/unit-list-screen';
+import { BrandListScreen } from '@/components/brand-list-screen';
 import { SupplierListScreen } from '@/components/supplier-list-screen';
+import { PurchaseListScreen } from '@/components/purchase-list-screen';
+import { PurchaseOrderScreen } from '@/components/purchase-order-screen';
+import { LoginScreen } from '@/components/login-screen';
 import { KPI_DATA, ProductItem } from '@/constants/pos-data';
 import { dashboardService } from '@/services/dashboard-service';
 import { productService } from '@/services/product-service';
-import { authService } from '@/services/auth-service';
 import { DashboardData, ApiProduct } from '@/types/api-types';
+import { useAuth } from '@/context/auth-context';
 
 export default function DashboardScreen() {
+  const { isAuthenticated, user, company, loading: authLoading } = useAuth();
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState('Dashboard');
   const [products, setProducts] = useState<ProductItem[]>([]);
@@ -33,20 +39,17 @@ export default function DashboardScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [newSaleModalOpen, setNewSaleModalOpen] = useState(false);
-  const [companyId, setCompanyId] = useState('4');
+
+  const activeCompanyId = user?.company;
 
   const fetchAllData = useCallback(async () => {
-    try {
-      // 1. Silent login check / session
-      const loginRes = await authService.login();
-      if (loginRes.data?.employee?.company) {
-        setCompanyId(loginRes.data.employee.company);
-      }
+    if (!isAuthenticated) return;
 
-      // 2. Fetch Dashboard stats (API 2) and Products (API 19) in parallel
+    try {
+      // Fetch Dashboard stats (API 2) and Products (API 19) in parallel
       const [dashRes, prodRes] = await Promise.all([
-        dashboardService.getDashboardData(companyId, '2026'),
-        productService.getProducts(companyId),
+        dashboardService.getDashboardData(activeCompanyId, '2026'),
+        productService.getProducts(activeCompanyId),
       ]);
 
       if (dashRes && dashRes.sale) {
@@ -78,11 +81,27 @@ export default function DashboardScreen() {
       setLoading(false);
       setRefreshing(false);
     }
-  }, [companyId]);
+  }, [isAuthenticated, activeCompanyId]);
 
   useEffect(() => {
-    fetchAllData();
-  }, [fetchAllData]);
+    if (isAuthenticated) {
+      fetchAllData();
+    }
+  }, [isAuthenticated, fetchAllData]);
+
+  // If restoring auth session
+  if (authLoading) {
+    return (
+      <View className="flex-1 bg-[#0B1A30] items-center justify-center">
+        <ActivityIndicator size="large" color="#10B981" />
+      </View>
+    );
+  }
+
+  // If not logged in, render real LoginScreen
+  if (!isAuthenticated) {
+    return <LoginScreen />;
+  }
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -98,7 +117,7 @@ export default function DashboardScreen() {
         unit_id: formData.unit_id,
         buy_price: formData.buy_price,
         sale_price: formData.sale_price,
-        company: companyId,
+        company: activeCompanyId,
       });
 
       if (res.error === 'False' || res.code === '200') {
@@ -155,7 +174,7 @@ export default function DashboardScreen() {
       {/* Dynamic Content based on activeMenu */}
       {activeMenu === 'Sales_List' ? (
         <ScrollView className="flex-1">
-          <SalesOrderListScreen onNewOrder={() => setActiveMenu('Sales_New')} />
+          <SalesOrderListScreen onNewOrder={() => setActiveMenu('Sale_Order')} />
           <PosFooter />
         </ScrollView>
       ) : activeMenu === 'Sale_Order' || activeMenu === 'Sales_New' ? (
@@ -186,9 +205,27 @@ export default function DashboardScreen() {
           <UnitListScreen />
           <PosFooter />
         </ScrollView>
+      ) : activeMenu === 'Products_Brands' ? (
+        <ScrollView className="flex-1">
+          <BrandListScreen />
+          <PosFooter />
+        </ScrollView>
       ) : activeMenu === 'Supplier_List' ? (
         <ScrollView className="flex-1">
           <SupplierListScreen />
+          <PosFooter />
+        </ScrollView>
+      ) : activeMenu === 'Purchase_List' ? (
+        <ScrollView className="flex-1">
+          <PurchaseListScreen onNewOrder={() => setActiveMenu('Purchase_New')} />
+          <PosFooter />
+        </ScrollView>
+      ) : activeMenu === 'Purchase_New' ? (
+        <ScrollView className="flex-1">
+          <PurchaseOrderScreen
+            onOrderSubmitted={() => setActiveMenu('Purchase_List')}
+            onBackToList={() => setActiveMenu('Purchase_List')}
+          />
           <PosFooter />
         </ScrollView>
       ) : (
@@ -222,8 +259,7 @@ export default function DashboardScreen() {
                   products={products}
                   onOpenAddModal={() => setAddModalOpen(true)}
                   onViewAllAlerts={() => {
-                    setActiveMenu('Damage_ExpirationList');
-                    Alert.alert('Alerts', 'Showing low stock and restocking alerts.');
+                    setActiveMenu('Products_List');
                   }}
                 />
               </View>

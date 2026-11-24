@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import { ProductItem } from '@/constants/pos-data';
 import { saleService } from '@/services/sale-service';
-import { API_CONFIG } from '@/constants/api';
 
 export interface SaleItemRow {
   productId: string;
@@ -152,7 +151,6 @@ export const SaleOrderScreen: React.FC<SaleOrderScreenProps> = ({
         discount: discountNum,
         payment: paymentNum,
         due,
-        company: API_CONFIG.DEFAULT_COMPANY,
       });
 
       // Reset form state

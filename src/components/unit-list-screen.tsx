@@ -103,7 +103,7 @@ export const UnitListScreen: React.FC = () => {
                     <Text className="w-12 text-xs font-mono text-slate-500">#{u.id}</Text>
                     <Text className="w-36 text-xs font-bold text-slate-800">{u.unit}</Text>
                     <Text className="w-20 text-xs text-slate-600 font-mono">{u.qty || '1'}</Text>
-                    <Text className="w-24 text-xs text-slate-600">{u.company || '4'}</Text>
+                    <Text className="w-24 text-xs text-slate-600">{u.company || '-'}</Text>
                     <View className="w-20">
                       <View className="bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full self-start">
                         <Text className="text-[10px] text-emerald-700 font-semibold">Active</Text>
